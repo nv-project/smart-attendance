@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import 'express-async-errors';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -29,7 +30,7 @@ app.use('/api/sessions', sessionRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/users', userRoutes);
 
-// In production the server also serves the built React app (one deployment, no CORS trouble)
+// In production the server also serves the built React app
 if (process.env.NODE_ENV === 'production') {
   const dist = path.join(__dirname, '../client/dist');
   app.use(express.static(dist));
