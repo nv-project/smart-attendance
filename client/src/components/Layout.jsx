@@ -2,7 +2,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { useAuth } from '../AuthContext.jsx';
 
 const links = {
-  admin: [['/', 'Home'], ['/courses', 'Courses'], ['/timetable', 'Timetable']],
+  admin: [['/', 'Home'], ['/courses', 'Courses'], ['/timetable', 'Timetable'], ['/users', 'Users']],
   teacher: [['/', 'Home'], ['/take', 'Take attendance'], ['/reports', 'Reports'], ['/timetable', 'Timetable']],
   student: [['/', 'Home'], ['/scan', 'Scan QR'], ['/reports', 'My attendance'], ['/timetable', 'Timetable']],
 };

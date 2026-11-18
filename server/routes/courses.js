@@ -1,3 +1,4 @@
+import { normalizeBatch } from '../utils/batch.js';
 import { Router } from 'express';
 import Course from '../models/Course.js';
 import User from '../models/User.js';
@@ -21,7 +22,7 @@ router.post('/', allow('admin'), async (req, res) => {
   const { name, code, batch, teacher } = req.body;
   if (!name || !code || !batch || !teacher) return res.status(400).json({ message: 'All fields are required' });
   try {
-    const course = await Course.create({ name, code, batch, teacher });
+    const course = await Course.create({ name, code, batch: normalizeBatch(batch), teacher });
     res.status(201).json(await course.populate('teacher', 'name email'));
   } catch (err) {
     if (err.code === 11000) return res.status(409).json({ message: 'A course with that code already exists' });

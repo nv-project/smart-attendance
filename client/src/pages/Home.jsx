@@ -19,6 +19,7 @@ export default function Home() {
   return (
     <>
       <h1>Hello, {user.name.split(' ')[0]}</h1>
+      {user.role === 'student' && <p className="muted">Batch: {user.batch}</p>}
       {user.role === 'student' && low.length > 0 && (
         <div className="alert">
           Attendance is below 75% in: {low.map((c) => `${c.course.code} (${c.percent}%)`).join(', ')}.{' '}

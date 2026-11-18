@@ -11,6 +11,7 @@ import courseRoutes from './routes/courses.js';
 import timetableRoutes from './routes/timetable.js';
 import sessionRoutes from './routes/sessions.js';
 import attendanceRoutes from './routes/attendance.js';
+import userRoutes from './routes/users.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -26,6 +27,7 @@ app.use('/api/courses', courseRoutes);
 app.use('/api/timetable', timetableRoutes);
 app.use('/api/sessions', sessionRoutes);
 app.use('/api/attendance', attendanceRoutes);
+app.use('/api/users', userRoutes);
 
 // In production the server also serves the built React app (one deployment, no CORS trouble)
 if (process.env.NODE_ENV === 'production') {

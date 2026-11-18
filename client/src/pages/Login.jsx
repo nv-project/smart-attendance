@@ -1,16 +1,20 @@
-
-import PasswordInput from '../components/PasswordInput.jsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, Link } from 'react-router-dom';
 import { useAuth } from '../AuthContext.jsx';
-import { errorText } from '../api.js';
+import api, { errorText } from '../api.js';
+import PasswordInput from '../components/PasswordInput.jsx';
 
 export default function Login() {
   const { user, login, register } = useAuth();
   const [mode, setMode] = useState('login');
   const [form, setForm] = useState({ name: '', email: '', password: '', role: 'student', batch: '' });
+  const [batches, setBatches] = useState([]);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    api.get('/auth/batches').then((r) => setBatches(r.data)).catch(() => {});
+  }, []);
 
   if (user) return <Navigate to="/" replace />;
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
@@ -42,7 +46,12 @@ export default function Login() {
               </select>
             </label>
             {form.role === 'student' && (
-              <label>Batch<input placeholder="MCA-1-A" value={form.batch} onChange={set('batch')} required /></label>
+              <label>Batch
+                <select value={form.batch} onChange={set('batch')} required>
+                  <option value="">Choose your batch…</option>
+                  {batches.map((b) => <option key={b} value={b}>{b}</option>)}
+                </select>
+              </label>
             )}
           </>
         )}

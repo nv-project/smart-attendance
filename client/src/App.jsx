@@ -10,6 +10,7 @@ import Courses from './pages/Courses.jsx';
 import TakeAttendance from './pages/TakeAttendance.jsx';
 import Scan from './pages/Scan.jsx';
 import Reports from './pages/Reports.jsx';
+import Users from './pages/Users.jsx';
 
 function Guard({ roles, children }) {
   const { user, loading } = useAuth();
@@ -22,6 +23,7 @@ function Guard({ roles, children }) {
 export default function App() {
   return (
     <Routes>
+      <Route path="/users" element={<Guard roles={['admin']}><Users /></Guard>} />
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password/:token" element={<ResetPassword />} />

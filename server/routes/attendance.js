@@ -21,7 +21,7 @@ router.post('/mark', allow('student'), async (req, res) => {
   }).populate('course', 'name code batch');
 
   if (!session) return res.status(400).json({ message: 'This QR code is invalid or has expired. Scan the latest one' });
-  if (session.course.batch !== req.user.batch) return res.status(403).json({ message: 'You are not enrolled in this course' });
+  if (session.course.batch !== req.user.batch) return res.status(403).json({ message: `Your batch is ${req.user.batch}, but this lecture is for ${session.course.batch}. Ask the admin to correct your batch.` });
 
   try {
     await Attendance.create({ session: session._id, course: session.course._id, student: req.user._id });

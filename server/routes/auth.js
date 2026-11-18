@@ -1,3 +1,6 @@
+import Course from '../models/Course.js';
+import { normalizeBatch } from '../utils/batch.js';
+
 import { Router } from 'express';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
@@ -21,11 +24,24 @@ router.post('/register', async (req, res) => {
   res.status(201).json({ token: sign(user._id), user: publicUser(user) });
 });
 
-router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email: (email || '').toLowerCase() });
-  if (!user || !(await user.matchPassword(password || ''))) return res.status(401).json({ message: 'Wrong email or password' });
-  res.json({ token: sign(user._id), user: publicUser(user) });
+router.post('/register', async (req, res) => {
+  const { name, email, password, role, batch } = req.body;
+  if (!name || !email || !password) return res.status(400).json({ message: 'Name, email and password are required' });
+  if (!['student', 'teacher'].includes(role)) return res.status(400).json({ message: 'Choose student or teacher' });
+  const cleanBatch = role === 'student' ? normalizeBatch(batch) : undefined;
+  if (role === 'student') {
+    if (!cleanBatch) return res.status(400).json({ message: 'Please choose your batch' });
+    if (!(await Course.exists({ batch: cleanBatch }))) return res.status(400).json({ message: 'That batch has no courses yet. Choose a batch from the list' });
+  }
+  if (await User.findOne({ email: email.toLowerCase() })) return res.status(409).json({ message: 'That email is already registered' });
+  const user = await User.create({ name, email, password, role, batch: cleanBatch });
+  res.status(201).json({ token: sign(user._id), user: publicUser(user) });
+});
+
+// Public: list of batches that have courses (used by the register form dropdown)
+router.get('/batches', async (req, res) => {
+  const batches = await Course.distinct('batch');
+  res.json(batches.sort());
 });
 
 // Step 1: user enters email. Same reply every time, so nobody can find out which emails are registered.
