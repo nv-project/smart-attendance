@@ -23,10 +23,11 @@ export function AuthProvider({ children }) {
   };
   const login = (body) => api.post('/auth/login', body).then(finish);
   const register = (body) => api.post('/auth/register', body).then(finish);
+  const resetWithCode = (body) => api.post('/auth/reset-password', body).then(finish);
   const logout = () => {
     localStorage.removeItem('token');
     setUser(null);
   };
 
-  return <AuthContext.Provider value={{ user, loading, login, register, logout }}>{children}</AuthContext.Provider>;
+    return <AuthContext.Provider value={{ user, loading, login, register, resetWithCode, logout }}>{children}</AuthContext.Provider>;
 }

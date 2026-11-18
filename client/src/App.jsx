@@ -3,7 +3,6 @@ import { useAuth } from './AuthContext.jsx';
 import Layout from './components/Layout.jsx';
 import Login from './pages/Login.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
-import ResetPassword from './pages/ResetPassword.jsx';
 import Home from './pages/Home.jsx';
 import Timetable from './pages/Timetable.jsx';
 import Courses from './pages/Courses.jsx';
@@ -26,7 +25,6 @@ export default function App() {
       <Route path="/users" element={<Guard roles={['admin']}><Users /></Guard>} />
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/reset-password/:token" element={<ResetPassword />} />
       <Route element={<Guard><Layout /></Guard>}>
         <Route path="/" element={<Home />} />
         <Route path="/timetable" element={<Timetable />} />

@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema(
     batch: { type: String, trim: true }, // students only, e.g. "MCA-1-A"
     resetTokenHash: String,
     resetTokenExpires: Date,
+    resetAttempts: { type: Number, default: 0 },
   },
   { timestamps: true }
 );
